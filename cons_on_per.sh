@@ -7,7 +7,15 @@ else
     exit 1
 fi
 
+
+if [ "$threshold" -gt 99 ]; then
+    echo "Maximum battery is 99"
+    exit 1
+fi
+
+sudo tee /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode <<<0; echo "conservation mode is now off"
 echo "keep terminal open, minimum percentage is 60%"
+
 
 while true; do
     current_battery=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "percentage" | awk '{print $2}' | tr -d '%')
